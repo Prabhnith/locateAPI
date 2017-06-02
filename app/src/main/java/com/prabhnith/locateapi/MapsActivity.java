@@ -93,8 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if ((ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
 
-            mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(20000).setFastestInterval(10000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest = LocationRequest.create();
+            mLocationRequest.setInterval(2000).setFastestInterval(1000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setSmallestDisplacement(2);
         }
     }
 
@@ -131,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(MapsActivity.this, "location :" + mlatitude + " " + mlongitude, Toast.LENGTH_SHORT).show();
         Log.i(TAG, "OnMapReady location" + mlatitude + " " + mlongitude);
         mMap.addMarker(new MarkerOptions().position(mylocation).title("I am here."));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 25));
     }
 
     @Override
@@ -142,9 +142,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mlongitude = location.getLongitude();
 
             LatLng mylocation = new LatLng(mlatitude, mlongitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 15));
-            mMap.animateCamera(CameraUpdateFactory.zoomIn());
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation, 25));
+//            mMap.animateCamera(CameraUpdateFactory.zoomIn());
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
             mapFragment.getMapAsync(this);
         }
         Toast.makeText(MapsActivity.this, "OnLocationChanged  :" + mlatitude + " " + mlongitude, Toast.LENGTH_SHORT).show();
@@ -170,6 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Toast.makeText(MapsActivity.this, "onConnected location :" + mlatitude + " " + mlongitude, Toast.LENGTH_SHORT).show();
         Log.i(TAG, "OnConnected location" + mlatitude + " " + mlongitude);
+        startLocationUpdates();
     }
 
     @Override
